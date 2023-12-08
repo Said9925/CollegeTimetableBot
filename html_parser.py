@@ -112,6 +112,9 @@ def week_schedule(gruppa):
         return "Группа не найдена"
 
 
-if __name__ == "__main__":
+def main():
     day_schedule("your_group_name")
     week_schedule("your_group_name")
+
+if __name__ == "__main__":
+    main()
