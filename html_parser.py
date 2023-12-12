@@ -3,6 +3,7 @@ from http import HTTPStatus
 import requests
 from bs4 import BeautifulSoup
 
+from config import SCHEDULE_TABLE, URL
 from info_week import week_info
 
 
@@ -10,29 +11,8 @@ number_week = int(week_info[2][0])
 day_week = week_info[1]
 
 
-Schedule_table = {
-    1: "(Начало- 9:00 | Конец - 10:00)",
-    2: "(Начало- 9:00 | Конец - 10:00)",
-    3: "(Начало- 10:10 | Конец - 11:10)",
-    4: "(Начало- 10:10 | Конец - 11:10)",
-    5: "(Начало - 11:20 | Конец - 12:20)",
-    6: "(Начало - 11:20 | Конец - 12:20)",
-    7: "(Начало - 13:00 | Конец - 14:00)",
-    8: "(Начало - 13:00 | Конец - 14:00)",
-    9: "(Начало - 14:10 | Конец - 15:10)",
-    10: "(Начало - 14:10 | Конец - 15:10)",
-    11: "(Начало - 15:20 | Конец - 16:20)",
-    12: "(Начало - 15:20 | Конец - 16:20)",
-    13: "(Начало - 16:30 | Конец - 17:30)",
-    14: "(Начало - 16:30 | Конец - 17:30)",
-    15: "(Начало - 17:40 | Конец - 18:40)",
-    16: "(Начало - 17:40 | Конец - 18:40)",
-}
-
-
 def fetch_schedule(gruppa):
-    url = "https://timetable.gstou.ru/User/TimeTablePartial"
-    response = requests.post(url, json={"gruppa": gruppa.upper()})
+    response = requests.post(URL, json={"gruppa": gruppa.upper()})
     subjects = {}
 
     days_week = {
@@ -52,7 +32,7 @@ def fetch_schedule(gruppa):
         for el in gruppa:
             subjects[int(el["trnum"])] = [
                 " ".join(el.text.strip().split()),
-                Schedule_table[int(el["trnum"]) - (int(el["trnum"]) // 20) * 20],
+                SCHEDULE_TABLE[int(el["trnum"]) - (int(el["trnum"]) // 20) * 20],
                 int(el["nedel"]),
             ]
 
@@ -78,17 +58,15 @@ def day_schedule(gruppa):
     message = ""
     week_information = ""
     for week in week_info:
-        week_information += week + '\n'
+        week_information += week + "\n"
 
     for day in days_week[day_week]:
         if day[2] in (number_week, 3):
-            for subject in range(2):
-                message += day[subject]
-                message += '\n'
-            message += '\n'
+            message += f"{day[0]}\n{day[1]}\n"
+        message += "\n"
 
     if message:
-        return week_information + '\n' + message
+        return f"{week_information} \n{message}"
     else:
         return "Группа не найдена"
 
@@ -100,21 +78,10 @@ def week_schedule(gruppa):
         message += f"{day_week}\n"
         for day in days_week[day_week]:
             if day[-1] in (number_week, 3):
-                for subject in range(2):
-                    message += day[subject]
-                    message += '\n'
-                message += '\n'
-        message += '\n'
+                message += f"{day[0]}\n{day[1]}\n"
+            message += "\n"
 
     if len(message.split()) > 6:
         return message
     else:
         return "Группа не найдена"
-
-
-def main():
-    day_schedule("your_group_name")
-    week_schedule("your_group_name")
-
-if __name__ == "__main__":
-    main()
