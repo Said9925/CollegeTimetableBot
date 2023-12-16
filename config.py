@@ -38,3 +38,9 @@ SCHEDULE_TABLE = {
 
 
 URL = "https://timetable.gstou.ru/User/TimeTablePartial"
+
+PERMANENT_ITEM = 3
+
+COLUMN_COUNT = 20
+
+NUMBER_DAYS_WEEK = 6
