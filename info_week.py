@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
-import requests
 from bs4 import BeautifulSoup
+import requests
 
 url = "https://timetable.gstou.ru/"
 response = requests.get(url)
