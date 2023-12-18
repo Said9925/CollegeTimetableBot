@@ -21,6 +21,6 @@
 
 3. **Запуск бота**
     ```
-    python bot.py
+    python main.py
     ```
     
