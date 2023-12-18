@@ -27,6 +27,7 @@ def fetch_schedule(gruppa):
         "Четверг": [],
         "Пятница": [],
         "Суббота": [],
+        "Воскресенье": []
     }
 
     if response.status_code == HTTPStatus.OK:
@@ -55,7 +56,7 @@ def fetch_schedule(gruppa):
             days_week["Пятница"].append(subject)
         elif 100 < number <= 120:
             days_week["Суббота"].append(subject)
-
+    
     return days_week
 
 
